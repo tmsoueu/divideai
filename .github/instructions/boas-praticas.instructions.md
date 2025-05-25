@@ -33,8 +33,8 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 
 
 ## Documentação
-- Documentar funções e classes usando docstrings.
-- Incluir informações sobre parâmetros, retornos e exceções levantadas nas docstrings.
+- Documentar funções e classes usando docstrings em pt-br.
+- Incluir informações sobre parâmetros, retornos e exceções levantadas nas docstrings em pt-br.
 
 ## Versionamento
 - Usar controle de versão (como Git) para gerenciar alterações no código.
