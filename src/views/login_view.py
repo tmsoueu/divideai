@@ -1,7 +1,7 @@
 """Módulo da tela de login do DivideAI."""
 
 import flet as ft
-
+from components.resources import LOGO
 
 class LoginView(ft.View):
     """
@@ -28,10 +28,17 @@ class LoginView(ft.View):
         self.controls = [
             ft.Container(
                 expand=True,
+                width=self.page.width,
                 gradient=ft.LinearGradient(
                     begin=ft.alignment.top_left,
                     end=ft.alignment.bottom_right,
                     colors=['#010a18', '#01132e'],
                 ),
+                content=ft.Image(
+                    src=LOGO,
+                    width=100,
+                    fit=ft.ImageFit.CONTAIN
+                )
             )
         ]
+        

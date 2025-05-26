@@ -40,4 +40,4 @@ if __name__ == '__main__':
 
     Inicia a aplicação Flet.
     """
-    ft.app(target=main, view=ft.AppView.FLET_APP, assets_dir='assets')
+    ft.app(target=main, view=ft.AppView.FLET_APP, assets_dir='src/assets')
