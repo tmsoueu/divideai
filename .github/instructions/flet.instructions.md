@@ -84,6 +84,7 @@ Seguir estas diretrizes e boas práticas ao trabalhar com Flet ajudará a criar 
 - [Exemplos de Aplicações Flet](https://flet.dev/docs/examples/)
 - [Exemplos de construção de classes](https://flet.dev/docs/getting-started/custom-controls)
 - [Documentação da SnackBar](https://flet.dev/docs/controls/snackbar/)
+- [Documentação do Colors](https://flet.dev/docs/reference/colors/)
 
 
 

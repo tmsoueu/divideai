@@ -2,6 +2,8 @@
 from connections.database import initialize_database
 from controls.controls import ft
 from views.login_view import LoginView
+from views.home_view import HomeView
+
 
 def main(page: ft.Page):
     """
@@ -29,6 +31,9 @@ def main(page: ft.Page):
         
         if page.route == '/':
             page.views.append(login)
+            
+        elif page.route == '/home':
+            page.views.append(HomeView(page=page))
             
         page.update()
 
