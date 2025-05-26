@@ -1,6 +1,6 @@
 import os
 import pytest
-from controls.database import (
+from connections.database import (
     get_connection,
     initialize_database,
     insert_user,
