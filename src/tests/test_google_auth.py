@@ -1,10 +1,10 @@
-from connections.google_auth import google_login_manual
+from connections.google_auth import google_login
 
-def test_google_login_manual():
+def test_google_login():
     """
     Testa o fluxo manual de login com Google OAuth2.
     """
-    user_info = google_login_manual()
+    user_info = google_login()
     print('Usuário autenticado:', user_info)
 
     assert isinstance(user_info, dict), 'Retorno deve ser um dicionário'

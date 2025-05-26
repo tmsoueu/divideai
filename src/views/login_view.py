@@ -1,5 +1,6 @@
 import flet as ft
 from components.resources import *
+from connections.google_auth import google_login  # ou google_login, conforme seu método
 
 class LoginView(ft.View):
     """
@@ -11,6 +12,12 @@ class LoginView(ft.View):
         self.page = page
         self.route = '/'
         self.padding = ft.padding.all(0)
+
+        def on_google_login_click(e):
+            user_info = google_login()
+            print('Usuário autenticado:', user_info)
+            # No próximo passo, vamos salvar no banco e redirecionar
+
         self.controls = [
             ft.Container(
                 expand=True,
@@ -48,7 +55,7 @@ class LoginView(ft.View):
                                         ft.Text('Entrar com o Google', weight=ft.FontWeight.BOLD),
                                     ],
                                 ),
-                                on_click=lambda e: print('Login com Google clicado')
+                                on_click=on_google_login_click  # <-- callback atualizado
                             ),
                         ),
                         ft.Container(
