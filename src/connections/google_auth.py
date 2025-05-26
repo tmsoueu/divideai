@@ -18,8 +18,25 @@ load_dotenv(dotenv_path=env_path)
 
 CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
+REDIRECT_URI_LOCAL = os.getenv('GOOGLE_REDIRECT_URI_LOCAL')
+REDIRECT_URI_PROD = os.getenv('GOOGLE_REDIRECT_URI_PROD')
 SCOPES = 'openid email profile'
+
+
+def is_running_local():
+    """
+    Detecta se o app está rodando localmente (desktop/web) ou em produção/mobile.
+    Retorna True se local, False se produção/mobile.
+    """
+    # Flet define a variável de ambiente FLET_RUNTIME no ambiente mobile/cloud
+    return os.getenv('FLET_RUNTIME') is None
+
+
+def get_redirect_uri():
+    """
+    Retorna o redirect URI apropriado para o ambiente.
+    """
+    return REDIRECT_URI_LOCAL if is_running_local() else REDIRECT_URI_PROD
 
 
 def get_auth_code():
@@ -29,9 +46,10 @@ def get_auth_code():
     Returns:
         str: Código de autorização recebido do Google.
     """
+    redirect_uri = get_redirect_uri()
     params = {
         'client_id': CLIENT_ID,
-        'redirect_uri': REDIRECT_URI,
+        'redirect_uri': redirect_uri,
         'response_type': 'code',
         'scope': SCOPES,
         'access_type': 'offline',
@@ -40,18 +58,23 @@ def get_auth_code():
     auth_url = f'https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}'
     webbrowser.open(auth_url)
 
-    class OAuthHandler(BaseHTTPRequestHandler):
-        def do_GET(self):
-            query = parse_qs(urlparse(self.path).query)
-            self.server.auth_code = query.get('code', [None])[0]
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b'Login realizado. Pode fechar esta aba.')
+    if is_running_local():
+        class OAuthHandler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                query = parse_qs(urlparse(self.path).query)
+                self.server.auth_code = query.get('code', [None])[0]
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'Login realizado. Pode fechar esta aba.')
 
-    parsed = urlparse(REDIRECT_URI)
-    server = HTTPServer((parsed.hostname, parsed.port), OAuthHandler)
-    server.handle_request()
-    return server.auth_code
+        parsed = urlparse(redirect_uri)
+        server = HTTPServer((parsed.hostname, parsed.port), OAuthHandler)
+        server.handle_request()
+        return server.auth_code
+    else:
+        # No Flet Cloud/mobile, o código de autorização será retornado via callback do Flet
+        # O fluxo pode ser adaptado conforme a documentação do Flet para OAuth2
+        raise NotImplementedError('Fluxo OAuth2 para produção/mobile deve ser implementado conforme o Flet Cloud.')
 
 
 def exchange_code_for_token(auth_code):
@@ -70,7 +93,7 @@ def exchange_code_for_token(auth_code):
             'code': auth_code,
             'client_id': CLIENT_ID,
             'client_secret': CLIENT_SECRET,
-            'redirect_uri': REDIRECT_URI,
+            'redirect_uri': get_redirect_uri(),
             'grant_type': 'authorization_code'
         }
     )

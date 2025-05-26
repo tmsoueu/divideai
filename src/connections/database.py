@@ -24,24 +24,27 @@ def get_connection():
 def initialize_database():
     """
     Cria a tabela de usuários caso ela não exista.
-
-    A tabela users armazena informações básicas do usuário autenticado pelo Google.
     """
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            '''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                google_id TEXT UNIQUE NOT NULL,
-                name TEXT NOT NULL,
-                email TEXT NOT NULL,
-                photo_url TEXT,
-                created_at TEXT NOT NULL
+    try:
+        print(f'Inicializando banco em: {DB_PATH}')
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                '''
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    google_id TEXT UNIQUE NOT NULL,
+                    name TEXT NOT NULL,
+                    email TEXT NOT NULL,
+                    photo_url TEXT,
+                    created_at TEXT NOT NULL
+                )
+                '''
             )
-            '''
-        )
-        conn.commit()
+            conn.commit()
+        print('Tabela users criada/verificada com sucesso.')
+    except Exception as e:
+        print(f'Erro ao inicializar banco: {e}')
 
 
 def insert_user(google_id: str, name: str, email: str, photo_url: str = None) -> int:

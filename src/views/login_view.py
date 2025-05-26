@@ -1,6 +1,8 @@
 import flet as ft
 from components.resources import *
-from connections.google_auth import google_login  # ou google_login, conforme seu método
+from connections.google_auth import google_login
+from connections.database import insert_user
+
 
 class LoginView(ft.View):
     """
@@ -15,8 +17,14 @@ class LoginView(ft.View):
 
         def on_google_login_click(e):
             user_info = google_login()
-            print('Usuário autenticado:', user_info)
-            # No próximo passo, vamos salvar no banco e redirecionar
+            insert_user(
+                google_id=user_info['sub'],
+                name=user_info.get('name', ''),
+                email=user_info.get('email', ''),
+                photo_url=user_info.get('picture', None)
+            )
+            # Redireciona para a rota /home após o login
+            self.page.go('/home')
 
         self.controls = [
             ft.Container(
@@ -55,7 +63,7 @@ class LoginView(ft.View):
                                         ft.Text('Entrar com o Google', weight=ft.FontWeight.BOLD),
                                     ],
                                 ),
-                                on_click=on_google_login_click  # <-- callback atualizado
+                                on_click=on_google_login_click
                             ),
                         ),
                         ft.Container(

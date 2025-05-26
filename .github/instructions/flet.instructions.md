@@ -79,10 +79,11 @@ Flet é uma biblioteca para criar interfaces de usuário (UI) em Python, permiti
 ## Conclusão
 Seguir estas diretrizes e boas práticas ao trabalhar com Flet ajudará a criar aplicações robustas, manuteníveis e de alta qualidade. A comunidade Flet está sempre disposta a ajudar, então não hesite em buscar suporte ou compartilhar suas experiências.
 
-## Referências
+## Documentação
 - [Documentação Oficial do Flet](https://flet.dev/docs/)
 - [Exemplos de Aplicações Flet](https://flet.dev/docs/examples/)
 - [Exemplos de construção de classes](https://flet.dev/docs/getting-started/custom-controls)
+- [Documentação da SnackBar](https://flet.dev/docs/controls/snackbar/)
 
 
 
