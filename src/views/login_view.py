@@ -1,7 +1,10 @@
 import flet as ft
 from components.resources import *
 from connections.google_auth import google_login
-from connections.database import insert_user
+from connections.database import insert_user, get_user_by_google_id
+from pathlib import Path
+
+SESSION_FILE = Path(__file__).parent.parent / 'storage' / 'data' / 'session.txt'
 
 
 class LoginView(ft.View):
@@ -15,6 +18,11 @@ class LoginView(ft.View):
         self.route = '/'
         self.padding = ft.padding.all(0)
 
+        # Verifica se já existe sessão salva e usuário no banco
+        google_id = self.get_logged_user_id()
+        if google_id and get_user_by_google_id(google_id):
+            self.page.go('/home')
+
         def on_google_login_click(e):
             user_info = google_login()
             insert_user(
@@ -23,7 +31,7 @@ class LoginView(ft.View):
                 email=user_info.get('email', ''),
                 photo_url=user_info.get('picture', None)
             )
-            # Redireciona para a rota /home após o login
+            self.set_logged_user_id(user_info['sub'])
             self.page.go('/home')
 
         self.controls = [
@@ -78,3 +86,15 @@ class LoginView(ft.View):
                 )
             )
         ]
+
+    def get_logged_user_id(self):
+        if SESSION_FILE.exists():
+            google_id = SESSION_FILE.read_text().strip()
+            print(f'[DEBUG] Lendo google_id do arquivo de sessão: {google_id}')
+            return google_id
+        print('[DEBUG] Arquivo de sessão não existe.')
+        return None
+
+    def set_logged_user_id(self, google_id):
+        print(f'[DEBUG] Salvando google_id na sessão: {google_id}')
+        SESSION_FILE.write_text(google_id)

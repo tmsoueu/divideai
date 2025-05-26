@@ -1,5 +1,8 @@
 import flet as ft
 from components.resources import AZUL_ESCURO, AZUL_CLARO
+from pathlib import Path
+
+SESSION_FILE = Path(__file__).parent.parent / 'storage' / 'data' / 'session.txt'
 
 class HomeView(ft.View):
     """
@@ -11,6 +14,11 @@ class HomeView(ft.View):
         self.page = page
         self.route = '/home'
         self.padding = ft.padding.all(0)
+
+        def on_logout_click(e):
+            if SESSION_FILE.exists():
+                SESSION_FILE.unlink()
+            self.page.go('/')
 
         self.controls = [
             ft.Container(
@@ -31,6 +39,13 @@ class HomeView(ft.View):
                             color=ft.Colors.WHITE,
                             size=32,
                             weight=ft.FontWeight.BOLD,
+                        ),
+                        ft.ElevatedButton(
+                            text='Logout',
+                            bgcolor=ft.Colors.WHITE,
+                            color=AZUL_ESCURO,
+                            width=page.width * 0.5,
+                            on_click=on_logout_click,
                         )
                     ]
                 )

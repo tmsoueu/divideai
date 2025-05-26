@@ -3,6 +3,14 @@ applyTo: '**'
 ---
 Tudo que a IA precisa saber sobre o Flet, incluindo boas práticas, padrões de codificação e convenções de nomenclatura.
 
+## NUNCA IGNORAR ESSES PASSOS
+1. **Leia a documentação oficial do Flet (https://flet.dev/docs/)**: Antes de começar, familiarize-se com a [documentação oficial do Flet](https://flet.dev/docs/). Isso fornecerá uma base sólida sobre como usar a biblioteca e suas funcionalidades.
+2. **Não use mais método `UserControl`**: Não usar o UserControl em nenhum momento, pois o Flet já possui uma estrutura de componentes que facilita a criação de interfaces de usuário.
+3. **Não use mais o método `run`**: Evite usar o método `run` para iniciar a aplicação Flet. Em vez disso, utilize o método `flet.app()` para iniciar a aplicação de forma adequada.
+4. **Não use mais o `ft.colors`**: Evite usar `ft.colors` diretamente. Em vez disso, utilize a classe `Colors` do Flet para acessar as cores de forma mais organizada e consistente.
+
+
+
 ## Flet
 Flet é uma biblioteca para criar interfaces de usuário (UI) em Python, permitindo o desenvolvimento de aplicativos web e desktop com facilidade. A seguir estão algumas diretrizes e boas práticas para trabalhar com Flet:
 
