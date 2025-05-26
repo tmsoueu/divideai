@@ -12,10 +12,9 @@ def main(page: ft.Page):
     """
     page.title = 'DivideAI'
     page.padding = 0
-    
     page.route = '/'
-    login = LoginView(page=page)
-    
+    login_view = LoginView(page=page)
+
     def route_change(route):
         """
         Gerencia a mudança de rotas da aplicação.
@@ -24,10 +23,8 @@ def main(page: ft.Page):
             route: Rota acessada.
         """
         page.views.clear()
-        
         if page.route == '/':
-            page.views.append(login)
-            
+            page.views.append(login_view)
         page.update()
 
     page.on_route_change = route_change
