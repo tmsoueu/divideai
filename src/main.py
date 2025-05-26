@@ -1,25 +1,49 @@
-"""Main module for the DivideAI application."""
-import flet as ft
+"""Módulo principal da aplicação DivideAI."""
+from controls.controls import ft
+from controls.toggle import Toggle
 from views.login_view import LoginView
 
 
 def main(page: ft.Page):
-    """Initialize the main application page."""
-    page.title = "DivideAI"
-    page.bgcolor = ft.Colors.BLUE_GREY_900  # Corrigido: colors -> Colors
+    """
+    Inicializa a página principal da aplicação.
+
+    Args:
+        page (ft.Page): Página principal do Flet.
+    """
+    page.title = 'DivideAI'
     page.padding = 0
-    page.theme_mode = ft.ThemeMode.LIGHT
-    page.window_width = 800
-    page.window_height = 600
-    page.window_resizable = False
-
-    # Configuração das rotas
+    page.theme_mode = ft.ThemeMode.DARK
+    
+    page.route = '/'
+    login = LoginView(page=page)
+    toggle = Toggle(page=page)
+    
+    page.overlay.append(toggle)
+    
+    
     def route_change(route):
+        """
+        Gerencia a mudança de rotas da aplicação.
+
+        Args:
+            route: Rota acessada.
+        """
         page.views.clear()
-        page.views.append(LoginView("/login"))
         
+        if page.route == '/':
+            page.views.append(login)
+            
+        page.update()
+
     page.on_route_change = route_change
-    page.go("/login")
+    page.go(page.route)
 
 
-ft.app(target=main)
+if __name__ == '__main__':
+    """
+    Ponto de entrada da aplicação.
+
+    Inicia a aplicação Flet.
+    """
+    ft.app(target=main, view=ft.AppView.FLET_APP, assets_dir='assets')

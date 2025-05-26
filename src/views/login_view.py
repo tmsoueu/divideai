@@ -1,7 +1,5 @@
-"""Login view module.
+"""Módulo da tela de login do DivideAI."""
 
-Este módulo contém a implementação da tela de login do aplicativo DivideAI.
-"""
 import flet as ft
 
 
@@ -16,26 +14,17 @@ class LoginView(ft.View):
         Nenhum atributo público.
     """
 
-    def __init__(self, route: str):
+    def __init__(self, page: ft.Page):
         """
         Inicializa uma nova instância da tela de login.
 
         Args:
             route: Rota associada à view.
         """
-        super().__init__(route=route)
-        self.container = ft.Container(
-            width=400,
-            height=600,
-            border_radius=35,
-            bgcolor=ft.colors.WHITE,
-            padding=20,
-            alignment=ft.alignment.center
-        )
+        super().__init__()
+        self.page = page
+        self.route = '/'
+        self.padding = ft.padding.all(0)
         self.controls = [
-            ft.Container(
-                content=self.container,
-                alignment=ft.alignment.center,
-                expand=True
-            )
+            
         ]

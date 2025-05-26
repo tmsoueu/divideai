@@ -5,6 +5,7 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 # Boas Práticas de Programação em python
 ## PEP 8
 - Seguir as diretrizes do PEP 8 para formatação de código Python.
+- Usar aspas simples sempre que possível.
 
 ## Nomenclatura
 - Usar nomes descritivos e significativos para variáveis, funções e classes em inglês.
