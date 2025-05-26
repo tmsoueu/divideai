@@ -104,3 +104,15 @@ def get_user_by_google_id(google_id: str) -> dict | None:
                 'created_at': row[5],
             }
         return None
+
+def get_any_user():
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users LIMIT 1')
+        return cursor.fetchone()
+
+def delete_all_users():
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM users')
+        conn.commit()

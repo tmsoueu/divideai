@@ -1,8 +1,6 @@
 import flet as ft
 from components.resources import AZUL_ESCURO, AZUL_CLARO
-from pathlib import Path
-
-SESSION_FILE = Path(__file__).parent.parent / 'storage' / 'data' / 'session.txt'
+from connections.database import delete_all_users
 
 class HomeView(ft.View):
     """
@@ -16,8 +14,7 @@ class HomeView(ft.View):
         self.padding = ft.padding.all(0)
 
         def on_logout_click(e):
-            if SESSION_FILE.exists():
-                SESSION_FILE.unlink()
+            delete_all_users()
             self.page.go('/')
 
         self.controls = [
@@ -34,12 +31,6 @@ class HomeView(ft.View):
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Text(
-                            'Olá mundo',
-                            color=ft.Colors.WHITE,
-                            size=32,
-                            weight=ft.FontWeight.BOLD,
-                        ),
                         ft.ElevatedButton(
                             text='Logout',
                             bgcolor=ft.Colors.WHITE,

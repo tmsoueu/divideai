@@ -1,7 +1,7 @@
 import flet as ft
 from components.resources import *
 from connections.google_auth import google_login
-from connections.database import insert_user, get_user_by_google_id
+from connections.database import insert_user, get_any_user
 from pathlib import Path
 
 SESSION_FILE = Path(__file__).parent.parent / 'storage' / 'data' / 'session.txt'
@@ -18,9 +18,9 @@ class LoginView(ft.View):
         self.route = '/'
         self.padding = ft.padding.all(0)
 
-        # Verifica se já existe sessão salva e usuário no banco
-        google_id = self.get_logged_user_id()
-        if google_id and get_user_by_google_id(google_id):
+        # Se existe usuário no banco, vai direto para home
+        user = get_any_user()
+        if user:
             self.page.go('/home')
 
         def on_google_login_click(e):
@@ -31,7 +31,6 @@ class LoginView(ft.View):
                 email=user_info.get('email', ''),
                 photo_url=user_info.get('picture', None)
             )
-            self.set_logged_user_id(user_info['sub'])
             self.page.go('/home')
 
         self.controls = [
