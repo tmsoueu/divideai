@@ -26,5 +26,12 @@ class LoginView(ft.View):
         self.route = '/'
         self.padding = ft.padding.all(0)
         self.controls = [
-            
+            ft.Container(
+                expand=True,
+                gradient=ft.LinearGradient(
+                    begin=ft.alignment.top_left,
+                    end=ft.alignment.bottom_right,
+                    colors=['#010a18', '#01132e'],
+                ),
+            )
         ]

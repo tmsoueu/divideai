@@ -1,6 +1,5 @@
 """Módulo principal da aplicação DivideAI."""
 from controls.controls import ft
-from controls.toggle import Toggle
 from views.login_view import LoginView
 
 
@@ -13,14 +12,9 @@ def main(page: ft.Page):
     """
     page.title = 'DivideAI'
     page.padding = 0
-    page.theme_mode = ft.ThemeMode.DARK
     
     page.route = '/'
     login = LoginView(page=page)
-    toggle = Toggle(page=page)
-    
-    page.overlay.append(toggle)
-    
     
     def route_change(route):
         """
