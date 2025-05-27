@@ -31,7 +31,7 @@ class HomeView(ft.View):
                         ft.Image(
                             src=LOGO_HORIZONTAL,
                             # width=200,
-                            # height=200,
+                            height=300,
                             fit=ft.ImageFit.CONTAIN
                         ),
                         ft.Text(
