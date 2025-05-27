@@ -1,7 +1,7 @@
 import flet as ft
 from components.resources import *
 from connections.google_auth import google_login
-from connections.database import insert_user, get_any_user
+from connections.database import insert_user
 from pathlib import Path
 
 SESSION_FILE = Path(__file__).parent.parent / 'storage' / 'data' / 'session.txt'
@@ -18,18 +18,14 @@ class LoginView(ft.View):
         self.route = '/'
         self.padding = ft.padding.all(0)
 
-        # Se existe usuário no banco, vai direto para home
-        user = get_any_user()
-        if user:
-            self.page.go('/home')
-
         def on_google_login_click(e):
             user_info = google_login()
+            print(f'[DEBUG] user_info: {user_info}')  # Adicione este print
             insert_user(
                 google_id=user_info['sub'],
                 name=user_info.get('name', ''),
                 email=user_info.get('email', ''),
-                photo_url=user_info.get('picture', None)
+                photo_url=user_info.get('picture', None)  # <- Deve ser a URL da foto
             )
             self.page.go('/home')
 

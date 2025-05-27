@@ -109,7 +109,18 @@ def get_any_user():
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM users LIMIT 1')
-        return cursor.fetchone()
+        row = cursor.fetchone()
+        if row:
+            # Ajuste conforme o nome das colunas no banco
+            return {
+                'id': row[0],
+                'google_id': row[1],
+                'name': row[2],
+                'email': row[3],
+                'photo_url': row[4],
+                'created_at': row[5]
+            }
+        return None
 
 def delete_all_users():
     with get_connection() as conn:

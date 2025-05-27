@@ -8,6 +8,11 @@ Tudo que a IA precisa saber sobre o Flet, incluindo boas práticas, padrões de 
 2. **Não use mais método `UserControl`**: Não usar o UserControl em nenhum momento, pois o Flet já possui uma estrutura de componentes que facilita a criação de interfaces de usuário.
 3. **Não use mais o método `run`**: Evite usar o método `run` para iniciar a aplicação Flet. Em vez disso, utilize o método `flet.app()` para iniciar a aplicação de forma adequada.
 4. **Não use mais o `ft.colors`**: Evite usar `ft.colors` diretamente. Em vez disso, utilize a classe `Colors` do Flet para acessar as cores de forma mais organizada e consistente.
+4. **Leia a documentação do Adaptive apps do flet(https://flet.dev/docs/getting-started/adaptive-apps)**: Sempre que for necessário criar uma aplicação adaptativa, consulte a [documentação sobre aplicativos adaptativos do Flet](https://flet.dev/docs/getting-started/adaptive-apps) para entender como implementar corretamente essa funcionalidade.
+5. **Leia a documentação do Flet para criar classes personalizadas (https://flet.dev/docs/getting-started/custom-controls)**: Ao criar classes personalizadas, consulte a [documentação sobre controles personalizados do Flet](https://flet.dev/docs/getting-started/custom-controls) para garantir que você esteja seguindo as melhores práticas e aproveitando os recursos da biblioteca.
+6. **Leia a documentação do SnackBar (https://flet.dev/docs/controls/snackbar/)**: Ao utilizar o SnackBar, consulte a [documentação do SnackBar do Flet](https://flet.dev/docs/controls/snackbar/) para entender como implementá-lo corretamente e personalizar sua aparência e comportamento.
+7. **Leia a documentação do Colors (https://flet.dev/docs/reference/colors/)**: Ao trabalhar com cores no Flet, consulte a [documentação de cores do Flet](https://flet.dev/docs/reference/colors/) para entender como utilizar as cores de forma eficaz e consistente em sua aplicação.
+8. **Não use mais o `ft.icons`**: Evite usar `ft.icons` diretamente. Em vez disso, utilize a classe `Icons` do Flet para acessar os ícones de forma mais organizada e consistente.  
 
 
 

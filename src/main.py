@@ -1,8 +1,8 @@
 """Módulo principal da aplicação DivideAI."""
-from connections.database import initialize_database
-from controls.controls import ft
+from connections.database import initialize_database, get_any_user, delete_all_users
 from views.login_view import LoginView
 from views.home_view import HomeView
+from controls.controls import ft
 
 
 def main(page: ft.Page):
@@ -13,13 +13,12 @@ def main(page: ft.Page):
         page (ft.Page): Página principal do Flet.
     """
     initialize_database()
-    
     page.title = 'DivideAI'
     page.padding = 0
-    
     page.route = '/'
+
     login = LoginView(page=page)
-    
+
     def route_change(route):
         """
         Gerencia a mudança de rotas da aplicação.
@@ -28,13 +27,16 @@ def main(page: ft.Page):
             route: Rota acessada.
         """
         page.views.clear()
+
+        user = get_any_user()
+        if user:
+            home_view = HomeView(page=page, user_infos=user)
+            page.views.append(home_view)
         
-        if page.route == '/':
-            page.views.append(login)
-            
-        elif page.route == '/home':
-            page.views.append(HomeView(page=page))
-            
+        else:
+            login_view = LoginView(page=page)
+            page.views.append(login_view)
+
         page.update()
 
     page.on_route_change = route_change
@@ -42,9 +44,4 @@ def main(page: ft.Page):
 
 
 if __name__ == '__main__':
-    """
-    Ponto de entrada da aplicação.
-
-    Inicia a aplicação Flet.
-    """
-    ft.app(target=main, view=ft.AppView.FLET_APP, assets_dir='src/assets')
+    ft.app(target=main, assets_dir='src/assets')

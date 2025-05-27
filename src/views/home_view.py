@@ -1,44 +1,53 @@
-import flet as ft
-from components.resources import AZUL_ESCURO, AZUL_CLARO
-from connections.database import delete_all_users
+from components.resources import *
+from controls.controls import ft, MyBottomAppBar, MyFloatingActionButton
+
 
 class HomeView(ft.View):
     """
-    Página inicial após o login.
+    View da tela inicial do DivideAI.
     """
-
-    def __init__(self, page: ft.Page):
+    def __init__(self, page: ft.Page, user_infos: str = None):
         super().__init__()
         self.page = page
-        self.route = '/home'
-        self.padding = ft.padding.all(0)
-
-        def on_logout_click(e):
-            delete_all_users()
-            self.page.go('/')
+        self.route = "/home"
+        self.vertical_alignment = ft.MainAxisAlignment.CENTER
+        self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+        self.bgcolor = AZUL_CLARO
+        
+        print(user_infos)
+        # Instancia o menu inferior e o botão flutuante
+        self.bottom_appbar = MyBottomAppBar(page=self.page, user_photo=user_infos.get('photo_url'))
+        self.floating_action_button = MyFloatingActionButton(page=self.page)
+        self.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
 
         self.controls = [
             ft.Container(
                 expand=True,
-                width=page.width,
-                gradient=ft.LinearGradient(
-                    begin=ft.alignment.top_left,
-                    end=ft.alignment.bottom_right,
-                    colors=[AZUL_ESCURO, AZUL_CLARO],
-                ),
+                margin=ft.margin.all(50),
                 content=ft.Column(
-                    expand=True,
-                    alignment=ft.MainAxisAlignment.CENTER,
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.ElevatedButton(
-                            text='Logout',
-                            bgcolor=ft.Colors.WHITE,
-                            color=AZUL_ESCURO,
-                            width=page.width * 0.5,
-                            on_click=on_logout_click,
+                        ft.Image(
+                            src=LOGO_HORIZONTAL,
+                            # width=200,
+                            # height=200,
+                            fit=ft.ImageFit.CONTAIN
+                        ),
+                        ft.Text(
+                            f'Bem-vindo {user_infos.get('name').split()[0]}!',
+                            size=22,
+                            weight=ft.FontWeight.BOLD,
+                            text_align=ft.TextAlign.CENTER,
+                            color=ft.Colors.WHITE
+                        ),
+                        ft.Icon(
+                            name=ft.Icons.ARROW_DOWNWARD,
+                            size=40,
+                            color=ft.Colors.WHITE
                         )
                     ]
                 )
             )
         ]
+
