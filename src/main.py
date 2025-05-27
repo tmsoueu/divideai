@@ -5,6 +5,7 @@ from views.home_view import HomeView
 from controls.controls import ft
 
 
+
 def main(page: ft.Page):
     """
     Inicializa a página principal da aplicação.

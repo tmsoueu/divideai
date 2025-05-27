@@ -1,6 +1,7 @@
 from components.resources import *
 from controls.controls import ft, MyBottomAppBar, MyFloatingActionButton
-
+import time
+import threading
 
 class HomeView(ft.View):
     """
@@ -20,6 +21,8 @@ class HomeView(ft.View):
         self.floating_action_button = MyFloatingActionButton(page=self.page)
         self.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
 
+        self.arrow_icon = None
+        
         self.controls = [
             ft.Container(
                 expand=True,
@@ -58,13 +61,12 @@ class HomeView(ft.View):
                             text_align=ft.TextAlign.CENTER,
                             color=AMARELO
                         ),
-                        ft.Icon(
-                            name=ft.Icons.ARROW_DOWNWARD,
-                            size=40,
-                            color=BRANCO
+                        arrow_icon := ft.Container(
+                            content=ft.Icon(name=ft.Icons.ARROW_DOWNWARD, size=40, color=BRANCO),
                         )
                     ]
                 )
             )
         ]
-
+        self.arrow_icon = arrow_icon
+        
