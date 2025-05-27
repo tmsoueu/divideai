@@ -23,7 +23,7 @@ class HomeView(ft.View):
         self.controls = [
             ft.Container(
                 expand=True,
-                margin=ft.margin.all(50),
+                margin=ft.margin.all(40),
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -35,16 +35,33 @@ class HomeView(ft.View):
                             fit=ft.ImageFit.CONTAIN
                         ),
                         ft.Text(
-                            f'Bem-vindo {user_infos.get('name').split()[0]}!',
-                            size=22,
+                            
+                            f'{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!',
+                            width=self.page.width * 0.8,
+                            size=16,
                             weight=ft.FontWeight.BOLD,
                             text_align=ft.TextAlign.CENTER,
-                            color=ft.Colors.WHITE
+                            color=BRANCO
+                        ),
+                        ft.Text(
+                            f'Chega de confusão na hora de dividir a conta do bar.',
+                            size=14,
+                            width=self.page.width * 0.5,
+                            text_align=ft.TextAlign.CENTER,
+                            color=BRANCO
+                        ),
+                        ft.Text(
+                            'Clica no botão aí embaixo e deixa que a gente resolve',
+                            size=14,
+                            width=self.page.width * 0.5,
+                            weight=ft.FontWeight.BOLD,
+                            text_align=ft.TextAlign.CENTER,
+                            color=AMARELO
                         ),
                         ft.Icon(
                             name=ft.Icons.ARROW_DOWNWARD,
                             size=40,
-                            color=ft.Colors.WHITE
+                            color=BRANCO
                         )
                     ]
                 )
