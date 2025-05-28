@@ -98,12 +98,14 @@ class MyAlertDialog(ft.AlertDialog):
     def __init__(self, page: ft.Page, title: str, message: str, on_ok, on_cancel=None):
         super().__init__()
         self.page = page
-        self.title = ft.Text(title, weight=ft.FontWeight.BOLD)
-        self.content = ft.Text(message)
-        self.actions_alignment = ft.MainAxisAlignment.END
-        self.bgcolor = ft.Colors.with_opacity(0.9, AZUL_ESCURO)
+        self.title = ft.Text(title, weight=ft.FontWeight.BOLD, color=BRANCO)
+        self.title_padding = ft.padding.only(left=50, top=30, right=50)
+        self.content_padding = ft.padding.only(left=50, top=20, right=50, bottom=20)
+        self.content = ft.Text(message, color=BRANCO)
+        self.actions_alignment = ft.MainAxisAlignment.SPACE_AROUND
+        self.bgcolor = AZUL_ESCURO
         self.barrier_color = ft.Colors.with_opacity(0.9, AMARELO)
-        
+
         def handle_cancel(e):
             if on_cancel:
                 on_cancel(e)
@@ -117,8 +119,20 @@ class MyAlertDialog(ft.AlertDialog):
             self.page.update()
 
         self.actions = [
-            ft.TextButton('Cancelar', on_click=handle_cancel),
-            ft.TextButton('OK', on_click=handle_ok)
+            ft.TextButton(
+                'Cancelar',
+                on_click=handle_cancel,
+                style=ft.ButtonStyle(
+                    color=BRANCO
+                )
+            ),
+            ft.TextButton(
+                'OK',
+                on_click=handle_ok,
+                style=ft.ButtonStyle(
+                    color=BRANCO
+                )
+            )
         ]
 
     def show(self):
