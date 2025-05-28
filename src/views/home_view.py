@@ -31,10 +31,9 @@ class HomeView(ft.View):
         self.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
 
         # Estado da animação
-        self.arrow_top = 0
         self.arrow_icon = ft.Container(
+            animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
             content=ft.Icon(name=ft.Icons.ARROW_DOWNWARD, size=40, color=BRANCO),
-            top=self.arrow_top,
         )
 
         self.arrow_stack = ft.Stack(
@@ -53,18 +52,22 @@ class HomeView(ft.View):
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Image(
-                            src=LOGO_HORIZONTAL,
-                            height=300,
-                            fit=ft.ImageFit.CONTAIN
-                        ),
-                        ft.Text(
-                            f"{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!",
-                            width=self.page.width * 0.8,
-                            size=16,
-                            weight=ft.FontWeight.BOLD,
-                            text_align=ft.TextAlign.CENTER,
-                            color=BRANCO
+                        ft.Column(
+                            controls=[
+                                ft.Image(
+                                    src=LOGO_HORIZONTAL,
+                                    height=300,
+                                    fit=ft.ImageFit.CONTAIN
+                                ),
+                                ft.Text(
+                                    f"{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!",
+                                    width=self.page.width * 0.8,
+                                    size=16,
+                                    weight=ft.FontWeight.BOLD,
+                                    text_align=ft.TextAlign.CENTER,
+                                    color=BRANCO
+                                )
+                            ]
                         ),
                         ft.Text(
                             'Chega de confusão na hora de dividir a conta do bar.',
@@ -73,6 +76,7 @@ class HomeView(ft.View):
                             text_align=ft.TextAlign.CENTER,
                             color=BRANCO
                         ),
+                        ft.Container(expand=True),  # Espaço para o menu não sobrepor conteúdo
                         ft.Text(
                             'Clica no botão aí embaixo e deixa que a gente resolve',
                             size=14,
@@ -90,10 +94,10 @@ class HomeView(ft.View):
 
     def animate_arrow(self):
         while True:
-            for offset in [0, 10]:  # movimento suavizado
-                self.arrow_stack.controls[0].top = offset
+            for offset in [0, 100]:  # movimento suavizado
+                self.arrow_icon.height = offset
                 self.page.update()
-                time.sleep(0.5)
+                time.sleep(0.6)
 
 
 
