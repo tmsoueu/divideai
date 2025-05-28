@@ -1,4 +1,4 @@
-from components.resources import AZUL_CLARO, BRANCO, AMARELO, LOGO_HORIZONTAL
+from components.resources import AZUL_CLARO, AZUL_ESCURO, BRANCO, AMARELO, LOGO_HORIZONTAL, BG_PATTERN_WEB
 from controls.controls import ft, MyBottomAppBar, MyFloatingActionButton
 import threading
 import time
@@ -24,7 +24,8 @@ class HomeView(ft.View):
         self.vertical_alignment = ft.MainAxisAlignment.CENTER
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         self.bgcolor = AZUL_CLARO
-
+        self.padding = ft.padding.all(0)
+        
         # Instancia o menu inferior e o botão flutuante
         self.bottom_appbar = MyBottomAppBar(page=self.page, user_photo=user_infos.get('photo_url'))
         self.floating_action_button = MyFloatingActionButton(page=self.page)
@@ -32,36 +33,61 @@ class HomeView(ft.View):
 
         # Estado da animação
         self.arrow_icon = ft.Container(
-            animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+            animate=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
             content=ft.Icon(name=ft.Icons.ARROW_DOWNWARD, size=40, color=BRANCO),
         )
 
         self.arrow_stack = ft.Stack(
             width=40,
-            height=60,
+            height=100,
             controls=[self.arrow_icon]
         )
-
 
         # Layout principal
         self.controls = [
             ft.Container(
                 expand=True,
-                margin=ft.margin.all(40),
+                image=ft.DecorationImage(
+                    src=BG_PATTERN_WEB,
+                    repeat=ft.ImageRepeat.REPEAT,
+                    opacity=0.3
+                ),
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
                         ft.Column(
+                            alignment=ft.MainAxisAlignment.END,
+                            height=self.page.height * 0.5,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                             controls=[
                                 ft.Image(
                                     src=LOGO_HORIZONTAL,
-                                    height=300,
+                                    width=self.page.width * 0.9,
+                                    height=self.page.height * 0.2,
                                     fit=ft.ImageFit.CONTAIN
                                 ),
+                                ft.Divider(
+                                    height=20,
+                                    color='transparent',
+                                    thickness=1
+                                ),
                                 ft.Text(
-                                    f"{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!",
+                                    'Boteco não é bagunça,\ne sua conta também não!',
                                     width=self.page.width * 0.8,
+                                    size=24,
+                                    weight=ft.FontWeight.BOLD,
+                                    text_align=ft.TextAlign.CENTER,
+                                    color=AMARELO
+                                ),
+                                ft.Divider(
+                                    height=20,
+                                    color='transparent',
+                                    thickness=1
+                                ),
+                                ft.Text(
+                                    f'Salve {user_infos.get('name').split()[0]}, bora beber sem dor de cabeça?',
+                                    width=self.page.width * 0.9,
                                     size=16,
                                     weight=ft.FontWeight.BOLD,
                                     text_align=ft.TextAlign.CENTER,
@@ -70,15 +96,15 @@ class HomeView(ft.View):
                             ]
                         ),
                         ft.Text(
-                            'Chega de confusão na hora de dividir a conta do bar.',
+                            'A da conta o gente resolve...\nMas a de amanhã é com você! ^^',
                             size=14,
                             width=self.page.width * 0.5,
                             text_align=ft.TextAlign.CENTER,
                             color=BRANCO
                         ),
-                        ft.Container(expand=True),  # Espaço para o menu não sobrepor conteúdo
+                        ft.Container(expand=True),
                         ft.Text(
-                            'Clica no botão aí embaixo e deixa que a gente resolve',
+                            'Clica no botão e joga essa dor de cabeça no nosso peito!',
                             size=14,
                             width=self.page.width * 0.5,
                             weight=ft.FontWeight.BOLD,
@@ -90,14 +116,18 @@ class HomeView(ft.View):
                 )
             )
         ]
-        threading.Thread(target=self.animate_arrow, daemon=True).start()
+        threading.Thread(target=self.animate_arrow, daemon=True).start() # Inicia a animação da seta
 
     def animate_arrow(self):
+        """
+        Animação do ícone de seta para baixo.
+        Faz o ícone subir e descer suavemente.
+        """
         while True:
-            for offset in [0, 100]:  # movimento suavizado
+            for offset in [0, 90]:
                 self.arrow_icon.height = offset
                 self.page.update()
-                time.sleep(0.6)
+                time.sleep(0.5)
 
 
 

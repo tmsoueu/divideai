@@ -19,12 +19,11 @@ class MyBottomAppBar(ft.BottomAppBar):
         
         self.bgcolor = AZUL_ESCURO
         self.shape = ft.NotchShape.CIRCULAR
-
         self.content = ft.Row(
             controls=[
-                ft.IconButton(icon=ft.Icons.MENU, icon_color=ft.Colors.WHITE),
+                ft.IconButton(icon=ft.Icons.HOME, icon_color=BRANCO),
+                ft.IconButton(icon=ft.Icons.LIST, icon_color=BRANCO),
                 ft.Container(expand=True),
-                ft.IconButton(icon=ft.Icons.SEARCH, icon_color=ft.Colors.WHITE),
                 
                 # Substituindo o último botão por imagem clicável
                 ft.GestureDetector(
@@ -65,7 +64,13 @@ class MyFloatingActionButton(ft.FloatingActionButton):
         """
         super().__init__()
         self.page = page
-        self.icon = ft.Icons.ADD
+        #self.icon = ft.Icons.ADD
+        self.bgcolor = AZUL_MEDIO
         self.shape = ft.CircleBorder()
         self.on_click = on_click
+        self.content = ft.Icon(
+            name=ft.Icons.ADD,
+            size=30,
+            color=BRANCO
+        )
         
