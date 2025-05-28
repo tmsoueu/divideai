@@ -66,5 +66,6 @@ class MyFloatingActionButton(ft.FloatingActionButton):
         super().__init__()
         self.page = page
         self.icon = ft.Icons.ADD
-        self.shape=ft.CircleBorder()
+        self.shape = ft.CircleBorder()
         self.on_click = on_click
+        

@@ -1,28 +1,50 @@
-from components.resources import *
+from components.resources import AZUL_CLARO, BRANCO, AMARELO, LOGO_HORIZONTAL
 from controls.controls import ft, MyBottomAppBar, MyFloatingActionButton
-import time
 import threading
+import time
+
 
 class HomeView(ft.View):
     """
     View da tela inicial do DivideAI.
+    Exibe mensagem de boas-vindas, logo e menu inferior.
     """
-    def __init__(self, page: ft.Page, user_infos: str = None):
+
+    def __init__(self, page: ft.Page, user_infos: dict = None):
+        """
+        Inicializa a tela inicial.
+
+        Args:
+            page (ft.Page): Página principal do Flet.
+            user_infos (dict): Informações do usuário logado.
+        """
         super().__init__()
         self.page = page
-        self.route = "/home"
+        self.route = '/home'
         self.vertical_alignment = ft.MainAxisAlignment.CENTER
         self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         self.bgcolor = AZUL_CLARO
-        
-        print(user_infos)
+
         # Instancia o menu inferior e o botão flutuante
         self.bottom_appbar = MyBottomAppBar(page=self.page, user_photo=user_infos.get('photo_url'))
         self.floating_action_button = MyFloatingActionButton(page=self.page)
         self.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
 
-        self.arrow_icon = None
-        
+        # Estado da animação
+        self.arrow_top = 0
+        self.arrow_icon = ft.Container(
+            content=ft.Icon(name=ft.Icons.ARROW_DOWNWARD, size=40, color=BRANCO),
+            top=self.arrow_top,
+        )
+
+        self.arrow_stack = ft.Stack(
+            width=40,
+            height=60,
+            controls=[self.arrow_icon]
+        )
+
+
+        # Layout principal
         self.controls = [
             ft.Container(
                 expand=True,
@@ -33,13 +55,11 @@ class HomeView(ft.View):
                     controls=[
                         ft.Image(
                             src=LOGO_HORIZONTAL,
-                            # width=200,
                             height=300,
                             fit=ft.ImageFit.CONTAIN
                         ),
                         ft.Text(
-                            
-                            f'{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!',
+                            f"{user_infos.get('name').split()[0]}, você sabe! 🍻\nBoteco não é bagunça,\ne sua conta também não!",
                             width=self.page.width * 0.8,
                             size=16,
                             weight=ft.FontWeight.BOLD,
@@ -47,7 +67,7 @@ class HomeView(ft.View):
                             color=BRANCO
                         ),
                         ft.Text(
-                            f'Chega de confusão na hora de dividir a conta do bar.',
+                            'Chega de confusão na hora de dividir a conta do bar.',
                             size=14,
                             width=self.page.width * 0.5,
                             text_align=ft.TextAlign.CENTER,
@@ -61,12 +81,19 @@ class HomeView(ft.View):
                             text_align=ft.TextAlign.CENTER,
                             color=AMARELO
                         ),
-                        arrow_icon := ft.Container(
-                            content=ft.Icon(name=ft.Icons.ARROW_DOWNWARD, size=40, color=BRANCO),
-                        )
+                        self.arrow_stack
                     ]
                 )
             )
         ]
-        self.arrow_icon = arrow_icon
-        
+        threading.Thread(target=self.animate_arrow, daemon=True).start()
+
+    def animate_arrow(self):
+        while True:
+            for offset in [0, 10]:  # movimento suavizado
+                self.arrow_stack.controls[0].top = offset
+                self.page.update()
+                time.sleep(0.5)
+
+
+
