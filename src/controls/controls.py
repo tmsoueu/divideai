@@ -16,7 +16,8 @@ class MyBottomAppBar(ft.BottomAppBar):
         """
         super().__init__()
         self.page = page
-        
+        self.on_logout_click_callback = on_logout_click  # Salva o callback externo, se houver
+
         self.bgcolor = AZUL_ESCURO
         self.shape = ft.NotchShape.CIRCULAR
         self.content = ft.Row(
@@ -24,10 +25,10 @@ class MyBottomAppBar(ft.BottomAppBar):
                 ft.IconButton(icon=ft.Icons.HOME, icon_color=BRANCO),
                 ft.IconButton(icon=ft.Icons.LIST, icon_color=BRANCO),
                 ft.Container(expand=True),
-                
+
                 # Substituindo o último botão por imagem clicável
                 ft.GestureDetector(
-                    on_tap=lambda e: self.on_logout_click(),
+                    on_tap=self.on_logout_click,
                     content=ft.Container(
                         content=ft.Image(
                             src=user_photo,
@@ -42,14 +43,30 @@ class MyBottomAppBar(ft.BottomAppBar):
                 )
             ]
         )
-        
-    def on_logout_click(self):
+
+    def on_logout_click(self, e=None):
         """
         Função chamada ao clicar no avatar do usuário.
-        Limpa o banco de dados e redireciona para a página inicial.
+        Exibe um dialog de confirmação antes de fazer logout.
         """
-        delete_all_users()
-        self.page.go('/')
+        print('[DEBUG] Avatar clicado! Exibindo diálogo de confirmação.')
+        def do_logout(e=None):
+            print('[DEBUG] Logout confirmado.')
+            delete_all_users()
+            self.page.go('/login_view')
+
+        def cancel(ev=None):
+            print('[DEBUG] Logout cancelado.')
+
+        dialog = MyAlertDialog(
+            page=self.page,
+            title='Confirmar logout',
+            message='Deseja realmente sair da sua conta?',
+            on_ok=do_logout,
+            on_cancel=cancel
+        )
+        dialog.show()
+        
 
 class MyFloatingActionButton(ft.FloatingActionButton):
     """
@@ -64,13 +81,47 @@ class MyFloatingActionButton(ft.FloatingActionButton):
         """
         super().__init__()
         self.page = page
-        #self.icon = ft.Icons.ADD
         self.bgcolor = AZUL_MEDIO
         self.shape = ft.CircleBorder()
-        self.on_click = on_click
         self.content = ft.Icon(
             name=ft.Icons.ADD,
             size=30,
             color=BRANCO
         )
+        self.on_click = on_click
+
+class MyAlertDialog(ft.AlertDialog):
+    """
+    Diálogo de confirmação reutilizável com título, mensagem e botões OK/Cancelar.
+    """
+
+    def __init__(self, page: ft.Page, title: str, message: str, on_ok, on_cancel=None):
+        super().__init__()
+        self.page = page
+        self.title = ft.Text(title, weight=ft.FontWeight.BOLD)
+        self.content = ft.Text(message)
+        self.actions_alignment = ft.MainAxisAlignment.END
+        self.bgcolor = ft.Colors.with_opacity(0.9, AZUL_ESCURO)
+        self.barrier_color = ft.Colors.with_opacity(0.9, AMARELO)
         
+        def handle_cancel(e):
+            if on_cancel:
+                on_cancel(e)
+            self.open = False
+            self.page.update()
+
+        def handle_ok(e):
+            if on_ok:
+                on_ok(e)
+            self.open = False
+            self.page.update()
+
+        self.actions = [
+            ft.TextButton('Cancelar', on_click=handle_cancel),
+            ft.TextButton('OK', on_click=handle_ok)
+        ]
+
+    def show(self):
+        """Exibe o diálogo."""
+        self.page.open(self)
+        self.page.update()
